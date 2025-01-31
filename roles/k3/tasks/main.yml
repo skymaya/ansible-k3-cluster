@@ -1,0 +1,22 @@
+- name: Download K3s install script
+  get_url:
+    url: https://get.k3s.io
+    dest: /tmp/install_k3s.sh
+    mode: 0755
+
+- name: Run K3s install script
+  shell: /tmp/install_k3s.sh
+  when: inventory_hostname in groups['servers']
+
+- name: Get K3s agent node token
+  command: cat /var/lib/rancher/k3s/server/node-token
+  register: node_token
+  changed_when: false
+  when: inventory_hostname in groups['servers']
+
+- name: Run K3s agent install script
+  shell: |
+    /tmp/install_k3s.sh
+  environment:
+    K3S_URL: "https://{{ hostvars['servers']['ansible_host'] }}:6443"
+    K3S_TOKEN: "{{ hostvars['servers']['k3s_token'].stdout }}"
