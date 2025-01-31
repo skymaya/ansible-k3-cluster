@@ -14,6 +14,7 @@ Run
 
 ansible-playbook -i hosts playbook.yml
 
-or
+or run roles separately with tags
 
-ansible-playbook -i hosts playbook.yml --tags kubernetes
+ansible-playbook -i hosts playbook.yml --tags firewall
+ansible-playbook -i hosts playbook.yml --tags k3
