@@ -12,6 +12,10 @@ Prerequisites
 
 Run
 
+export ANSIBLE_HOST_KEY_CHECKING=False
+
+then
+
 ansible-playbook -i hosts playbook.yml
 
 or run roles separately with tags
