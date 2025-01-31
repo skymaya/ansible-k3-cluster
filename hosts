@@ -1,0 +1,6 @@
+[servers]
+k3-server ansible_host=192.168.1.163
+
+[agents]
+k3-agent1 ansible_host=192.168.1.164
+k3-agent2 ansible_host=192.168.1.165

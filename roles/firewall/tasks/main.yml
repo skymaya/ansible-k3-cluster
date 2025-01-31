@@ -1,0 +1,5 @@
+- name: Stop and disable ufw
+  systemd_service:
+    name: ufw
+    state: stopped
+    enabled: false
