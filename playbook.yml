@@ -1,4 +1,4 @@
-- name: Install kubernetes cluster
+- name: Install Kubernetes K3s cluster
   hosts: agents,servers
   become: yes
   vars:
