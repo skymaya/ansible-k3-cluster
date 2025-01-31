@@ -1,3 +1,5 @@
+# just stop and disable ufw for now
+
 - name: Stop and disable ufw
   systemd_service:
     name: ufw
