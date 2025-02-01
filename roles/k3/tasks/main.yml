@@ -21,3 +21,31 @@
     K3S_URL: "https://{{ hostvars['k3-server']['ansible_host'] }}:6443"
     K3S_TOKEN: "{{ hostvars['k3-server']['node_token'].stdout }}"
   when: inventory_hostname in groups['agents']
+
+- name: Create .kube directory
+  file:
+    path: /root/.kube
+    state: directory
+    mode: 0755
+  when: inventory_hostname in groups['agents']
+
+- name: Fetch config from server to local
+  fetch:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: ./k3s.yaml
+    flat: yes
+  when: inventory_hostname in groups['servers']
+
+- name: Copy config to agent nodes
+  copy:
+    src: ./k3s.yaml
+    dest: /root/.kube/config
+    mode: 0600
+  when: inventory_hostname in groups['agents']
+
+- name: Update server API address in config
+  replace:
+    path: /root/.kube/config
+    regexp: 'server: https://127.0.0.1:6443'
+    replace: 'server: https://{{ hostvars["k3-server"]["ansible_host"] }}:6443'
+  when: inventory_hostname in groups['agents']
